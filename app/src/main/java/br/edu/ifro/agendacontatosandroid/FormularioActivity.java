@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import br.edu.ifro.agendacontatosandroid.DAO.ContatoDAO;
 import br.edu.ifro.agendacontatosandroid.model.Contato;
 
 public class FormularioActivity extends AppCompatActivity {
@@ -29,15 +30,25 @@ public class FormularioActivity extends AppCompatActivity {
         formSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Contato contato = new Contato();
+                try {
+                    Contato contato = new Contato();
 
-                contato.setNome(formNome.getText().toString().trim());
-                contato.setEmail(formEmail.getText().toString().trim());
-                contato.setEndereco(formEndereco.getText().toString().trim());
-                contato.setTelefone(formTelefone.getText().toString().trim());
+                    contato.setNome(formNome.getText().toString().trim());
+                    contato.setEmail(formEmail.getText().toString().trim());
+                    contato.setEndereco(formEndereco.getText().toString().trim());
+                    contato.setTelefone(formTelefone.getText().toString().trim());
 
-                Toast.makeText(FormularioActivity.this, contato.toString(),Toast.LENGTH_SHORT).show();
-                finish();
+                    //inserir no banco de dados
+                    ContatoDAO contatoDAO = new ContatoDAO(FormularioActivity.this);
+                    contatoDAO.inserir(contato);
+
+                    Toast.makeText(FormularioActivity.this, contato.toString(),Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
             }
         });
     }

@@ -8,6 +8,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.List;
+
+import br.edu.ifro.agendacontatosandroid.DAO.ContatoDAO;
+import br.edu.ifro.agendacontatosandroid.model.Contato;
+
 public class ListarContatosActivity extends AppCompatActivity {
 
     private ListView lista;
@@ -22,7 +27,11 @@ public class ListarContatosActivity extends AppCompatActivity {
         lista =  findViewById(R.id.listar_contatos_listview);
         buttonAdd = findViewById(R.id.listar_contatos_button_new);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,itens);
+        ContatoDAO contatoDAO = new ContatoDAO(this);
+        List<Contato> contatos = contatoDAO.Listar();
+
+
+        ArrayAdapter<Contato> adapter = new ArrayAdapter<Contato>(this, android.R.layout.simple_list_item_1,contatos);
 
         lista.setAdapter(adapter);
 
