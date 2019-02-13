@@ -1,6 +1,8 @@
 package br.edu.ifro.agendacontatosandroid.model;
 
-public class Contato {
+import java.io.Serializable;
+
+public class Contato implements Serializable {
     private int id;
     private String nome;
     private String email;
@@ -59,12 +61,6 @@ public class Contato {
 
     @Override
     public String toString() {
-        return "Contato{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", email='" + email + '\'' +
-                ", endereco='" + endereco + '\'' +
-                ", telefone='" + telefone + '\'' +
-                '}';
+        return this.getId() + " - " + this.getNome();
     }
 }

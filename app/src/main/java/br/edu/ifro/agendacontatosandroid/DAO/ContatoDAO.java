@@ -13,6 +13,7 @@ import br.edu.ifro.agendacontatosandroid.model.Contato;
 
 public class ContatoDAO extends SQLiteOpenHelper {
 
+    private final String TABLE_NAME = "contatos";
 
     public ContatoDAO(Context context) {
         super(context, "Agenda de Contatos", null, 1);
@@ -20,7 +21,7 @@ public class ContatoDAO extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "create table contatos (id integer primary key, nome text not null, email text, endereco text, telefone text)";
+        String sql = "create table " + TABLE_NAME + " (id integer primary key, nome text not null, email text, endereco text, telefone text)";
         db.execSQL(sql);
     }
 
@@ -30,7 +31,6 @@ public class ContatoDAO extends SQLiteOpenHelper {
     }
 
     public void inserir(Contato contato){
-
         SQLiteDatabase db = getWritableDatabase();
         ContentValues dados = new ContentValues();
 
@@ -39,11 +39,11 @@ public class ContatoDAO extends SQLiteOpenHelper {
         dados.put("endereco", contato.getEndereco());
         dados.put("telefone", contato.getTelefone());
 
-        db.insert("contatos", null, dados);
+        db.insert(TABLE_NAME, null, dados);
     }
     public List<Contato> Listar(){
 
-        String sql = "select * from contatos";
+        String sql = "select * from " + TABLE_NAME;
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.rawQuery(sql, null);
 
@@ -61,5 +61,24 @@ public class ContatoDAO extends SQLiteOpenHelper {
             lista.add(contato);
         }
         return lista;
+    }
+
+    public void remover(int id) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.delete(TABLE_NAME, "id = ?", new String[]{String.valueOf(id)});
+    }
+
+    public void alterar(Contato contato) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues dados = new ContentValues();
+
+        dados.put("id", contato.getId());
+        dados.put("nome", contato.getNome());
+        dados.put("email", contato.getEmail());
+        dados.put("endereco", contato.getEndereco());
+        dados.put("telefone", contato.getTelefone());
+
+        db.update(TABLE_NAME, dados, "id = ?", new String[]{String.valueOf(contato.getId())});
     }
 }
